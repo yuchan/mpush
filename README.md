@@ -11,7 +11,7 @@ Push Notification Server written by [Go](https://golang.org).
 
 ## Usage
 
-on terminal
+**on terminal**
 
     $ ./setup.sh
     $ go build -o mpush
@@ -19,7 +19,7 @@ on terminal
 
 you should install API client, like [Postman](https://www.getpostman.com), [CocoaRestClient](http://mmattozzi.github.io/cocoa-rest-client/).
 
-on client
+**on client**
 
 you can create request like this.
 
