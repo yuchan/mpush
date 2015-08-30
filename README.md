@@ -5,16 +5,14 @@ Push Notification Server written by [Go](https://golang.org).
 
 ## Prerequisite
 
-- install [Go](https://golang.org)
-- setup [GOPATH](https://golang.org/doc/code.html#GOPATH) and GOROOT([some arguments](http://dave.cheney.net/2013/06/14/you-dont-need-to-set-goroot-really))
 - prepare cert.pem, and key.pem along with [this guide](http://stackoverflow.com/a/21253261)
 
 ## Usage
 
 **move to the directory where cert.pem and key.pem exist.**
 
-    $ go get github.com/yuchan/mpush
-    $ $GOPATH/bin/mpush
+- download [binary]()
+- execute mpush binary (e.g. ./mpush)
 
 you should install API client, like [Postman](https://www.getpostman.com), [CocoaRestClient](http://mmattozzi.github.io/cocoa-rest-client/).
 
@@ -28,6 +26,7 @@ you can create request like this.
 
 ### prepare
 
-    go get github.com/tools/godep
+    $ go get github.com/tools/godep
+	$ godep restore
 
 Before you send pull request, I'd like you to type "go fmt *.go". :3
