@@ -19,16 +19,12 @@ type Message struct {
 
 func main() {
 	r := gin.Default()
-	r.LoadHTMLGlob("templates/*")
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Main website - index",
-		})
-	})
 
-	r.GET("/edit", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "edit.html", gin.H{
-			"title": "Main website - Edit",
+	r.GET("/help", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status":      http.StatusOK,
+			"page":        "help",
+			"description": "https://github.com/yuchan/mpush",
 		})
 	})
 
@@ -43,7 +39,6 @@ func main() {
 		msg.Body = body
 		msg.Sound = sound
 		tokens := strings.Split(token, ",")
-		msg.Badge = len(tokens)
 		for i, tok := range tokens {
 			go func(i int, tok string) {
 				SendPush(tok, "cert.pem", "key.pem", &msg)
