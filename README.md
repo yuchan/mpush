@@ -11,7 +11,7 @@ Push Notification Server written by [Go](https://golang.org).
 
 **move to the directory where cert.pem and key.pem exist.**
 
-- download [binary]()
+- download [binary](https://github.com/yuchan/mpush/releases)
 - execute mpush binary (e.g. ./mpush)
 
 you should install API client, like [Postman](https://www.getpostman.com), [CocoaRestClient](http://mmattozzi.github.io/cocoa-rest-client/).
