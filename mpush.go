@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/timehop/apns"
@@ -15,6 +16,7 @@ type Message struct {
 	Badge  int
 	Body   string
 	Sound  string
+	Custom string
 }
 
 func main() {
@@ -33,11 +35,13 @@ func main() {
 		body := c.PostForm("body")
 		badge := c.DefaultPostForm("badge", "0")
 		sound := c.DefaultPostForm("sound", "default.aiff")
+		customValue := c.DefaultPostForm("custom", "")
 		var msg Message
 		msg.Status = http.StatusOK
 		msg.Badge, _ = strconv.Atoi(badge)
 		msg.Body = body
 		msg.Sound = sound
+		msg.Custom = customValue
 		tokens := strings.Split(token, ",")
 		for i, tok := range tokens {
 			go func(i int, tok string) {
@@ -71,8 +75,15 @@ func SendPush(token string, cert string, key string, msg *Message) {
 	p.APS.Sound = msg.Sound
 	p.APS.ContentAvailable = 1
 
-	p.SetCustomValue("link", "zombo://dot/com")
-	p.SetCustomValue("game", map[string]int{"score": 234})
+	var dat map[string]interface{}
+
+	if err := json.Unmarshal([]byte(msg.Custom), &dat); err != nil {
+		fmt.Println(err)
+	} else {
+		for k, v := range dat {
+			p.SetCustomValue(k, valueString(v))
+		}
+	}
 
 	m := apns.NewNotification()
 	m.Payload = p
@@ -82,4 +93,39 @@ func SendPush(token string, cert string, key string, msg *Message) {
 	m.ID = "user_id:timestamp"
 
 	c.Send(m)
+}
+
+func valueString(data interface{}) string {
+	switch data.(type) {
+	case string:
+		return data.(string)
+	case float64:
+		return fmt.Sprint(data.(float64))
+	case bool:
+		return fmt.Sprint(data.(bool))
+	case nil:
+		return "null"
+	case []interface{}:
+		var str []byte
+		str = append(str, '[')
+		for _, v := range data.([]interface{}) {
+			str = append(str, valueString(v)...)
+			str = append(str, ' ')
+		}
+		str = append(str, ']')
+		return fmt.Sprint(string(str))
+	case map[string]interface{}:
+		var str []byte
+		str = append(str, '{')
+		for k, v := range data.(map[string]interface{}) {
+			str = append(str, k...)
+			str = append(str, ':')
+			str = append(str, valueString(v)...)
+			str = append(str, ' ')
+		}
+		str = append(str, '}')
+		return fmt.Sprint(string(str))
+	default:
+		return ""
+	}
 }
