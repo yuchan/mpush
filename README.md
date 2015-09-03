@@ -1,16 +1,11 @@
-mpush
-========================
-
+# mpush
 Push Notification Server written by [Go](https://golang.org).
 
 ## Prerequisite
-
 - prepare cert.pem, and key.pem along with [this guide](http://stackoverflow.com/a/21253261)
 
 ## Usage
-
 **move to the directory where cert.pem and key.pem exist.**
-
 - download [binary](https://github.com/yuchan/mpush/releases)
 - execute mpush binary (e.g. ./mpush)
 
@@ -22,11 +17,23 @@ you can create request like this.
 
 ![ClientImage](https://dl.dropboxusercontent.com/u/1655900/Screenshots/Screenshot%202015-08-29%2023.50.53.png)
 
-## Contribution
+## API Spec
+### parameters
 
+key    | value                                      | required
+------ | :----------------------------------------: | -------:
+token  | comma separated token list                 |  **yes**
+body   | message body                               |  **yes**
+badge  | badge number (default: 0)                  |       no
+sound  | sound file name                            |       no
+custom | **json formatted** text for custom payload |       no
+
+## Contribution
 ### prepare
 
-    $ go get github.com/tools/godep
-	$ godep restore
+```
+$ go get github.com/tools/godep
+$ godep restore
+```
 
 Before you send pull request, I'd like you to type "go fmt *.go". :3
